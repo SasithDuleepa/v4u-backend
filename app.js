@@ -4,13 +4,19 @@ const mongoose = require('mongoose');
 const cors=require("cors");
 require('dotenv').config();
 const cookieParser = require('cookie-parser');
+const Grid = require("gridfs-stream");
 
 const app = express();
-app.use(cors());
+let gfs;
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true
+}));
 app.use(cookieParser());
 
 const userrouter = require("./routes/userroutes");
 const bookrouter = require("./routes/bookroutes");
+
 
 app.use(bodyparser.json())
 
@@ -18,8 +24,12 @@ app.use(bodyparser.json())
 app.use(function(req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
     res.setHeader('Access-Control-Allow-Credentials', 'true');
-      res.header("Access-Control-Allow-Origin", "http://localhost:3000");
-      res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+     res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+     res.header('Access-Control-Allow-Origin', req.headers.origin);
+     res.header('Access-Control-Allow-Credentials', true);
+     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
       next();
     });
 
@@ -29,9 +39,20 @@ mongoose.connect(`${process.env.DB_url}`,{
 .catch((err)=>{console.log(err)});
 
 
+const conn =mongoose.connection;
+conn.once("open", function(){
+  gfs = Grid(conn.db, mongoose.mongo);
+  gfs.collection("photos");
+})
+
 app.use("/register", userrouter);
 app.use("/register", userrouter);
 app.use("/", userrouter);
+
+
+
+
+
 
 app.use("/book", bookrouter);
 
