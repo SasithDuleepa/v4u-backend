@@ -18,6 +18,7 @@ const userrouter = require("./routes/userroutes");
 const bookrouter = require("./routes/bookroutes");
 
 
+
 app.use(bodyparser.json())
 
 
@@ -39,15 +40,12 @@ mongoose.connect(`${process.env.DB_url}`,{
 .catch((err)=>{console.log(err)});
 
 
-const conn =mongoose.connection;
-conn.once("open", function(){
-  gfs = Grid(conn.db, mongoose.mongo);
-  gfs.collection("photos");
-})
+
 
 app.use("/register", userrouter);
 app.use("/register", userrouter);
 app.use("/", userrouter);
+
 
 
 

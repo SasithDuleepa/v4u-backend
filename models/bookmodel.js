@@ -2,6 +2,9 @@ const mongoose = require("mongoose");
 
 
 const Book=mongoose.Schema({
+    filename: String,
+    path: String,
+    size: Number,
     user_id:{
         type:String,
     },
@@ -19,7 +22,8 @@ const Book=mongoose.Schema({
     },
     pages:{
         type:String
-    }
+    },
+    
 
 })
 
