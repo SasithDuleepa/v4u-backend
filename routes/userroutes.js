@@ -25,7 +25,7 @@ router.post("/", async(req,res)=>{
     const saveuser =  newuser.save()
     .then((req)=>{res.send(newuser)})
     .catch((err)=>{res.send(err)})
-    console.log(newuser);
+    // console.log(newuser);
 })
 
 router.post('/login', async(req,res)=>{
@@ -35,7 +35,7 @@ router.post('/login', async(req,res)=>{
 
     var find_mail = await Newuser.findOne({email:useremail})
     .then((find_mail)=>{
-        console.log(find_mail)
+        // console.log(find_mail)
         if(find_mail.password === req.body.password){
             const user = {name: "user",
                           userid:find_mail._id,
@@ -74,7 +74,7 @@ router.get("/user",async(req,res)=>{
             if (err) {
               console.log(err);
             } else {
-              console.log(decoded);
+            //   console.log(decoded);
               res.send(decoded.name);
              
             }
@@ -89,6 +89,18 @@ router.get("/user",async(req,res)=>{
 
      
     
+})
+
+router.post('/user/cart',async(req,res)=>{
+    console.log(req.body.userId)
+
+    var find_user = await Newuser.findOneAndUpdate({_id:req.body.userId},
+        { book_id:req.body.bookId })
+    .then((find_user)=>{
+        console.log(find_user)
+    })
+
+
 })
 
 module.exports = router;

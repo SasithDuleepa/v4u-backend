@@ -72,7 +72,7 @@ router.post("/save", upload.single('file'),async(req,res)=>{
 router.get('/download/:filename', (req, res) => {
   const fileName = req.params.filename;
   const filePath = path.join('D:/V4U/BACK-END', 'uploads', fileName);
-  console.log(filePath)
+  // console.log(filePath)
 
   res.sendFile(filePath, (err) => {
     if (err) {
@@ -88,5 +88,26 @@ router.get("/newbooks", async(req,res)=>{
   const newBooks =await File.find().sort({ _id: -1 }).limit(8)
   .then((newBooks)=>{res.send(newBooks)})
   .catch((err)=>{console.log(err)})
+})
+
+
+
+
+
+
+
+router.post('/book', async(req,res)=>{
+  const book_title= req.body.book_title;
+  console.log(book_title)
+  const book = File.findOne({book_name:book_title})
+  .then((book)=>{
+    res.send(book);
+    console.log(book);
+
+
+
+
+
+})
 })
 module.exports = router;

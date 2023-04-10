@@ -15,7 +15,8 @@ const user = mongoose.Schema({
     },
     user:{
         type:String,
-    }
+    },
+    book_id:{type:String},
 })
 
 module.exports = mongoose.model("User", user)
